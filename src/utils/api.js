@@ -28,9 +28,53 @@ export const api = {
     return res.json();
   },
 
+  getCar: async (id) => {
+    const res = await fetch(`${API_URL}/api/cars/${id}`);
+    return res.json();
+  },
+
+  addCar: async (carData) => {
+    const res = await fetch(`${API_URL}/api/cars`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`
+      },
+      body: JSON.stringify(carData)
+    });
+    return res.json();
+  },
+
+  updateCar: async (id, carData) => {
+    const res = await fetch(`${API_URL}/api/cars/${id}`, {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`
+      },
+      body: JSON.stringify(carData)
+    });
+    return res.json();
+  },
+
+  deleteCar: async (id) => {
+    const res = await fetch(`${API_URL}/api/cars/${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    return res.json();
+  },
+
   // Bookings
   getBookings: async () => {
     const res = await fetch(`${API_URL}/api/bookings`, {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    return res.json();
+  },
+
+  getBooking: async (id) => {
+    const res = await fetch(`${API_URL}/api/bookings/${id}`, {
       headers: { 'Authorization': `Bearer ${getToken()}` }
     });
     return res.json();
@@ -48,9 +92,56 @@ export const api = {
     return res.json();
   },
 
-  // Profile
+  updateBooking: async (id, status) => {
+    const res = await fetch(`${API_URL}/api/bookings/${id}`, {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`
+      },
+      body: JSON.stringify({ status })
+    });
+    return res.json();
+  },
+
+  deleteBooking: async (id) => {
+    const res = await fetch(`${API_URL}/api/bookings/${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    return res.json();
+  },
+
+  // Users
   getProfile: async () => {
     const res = await fetch(`${API_URL}/api/users/profile`, {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    return res.json();
+  },
+
+  updateProfile: async (profileData) => {
+    const res = await fetch(`${API_URL}/api/users/profile`, {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`
+      },
+      body: JSON.stringify(profileData)
+    });
+    return res.json();
+  },
+
+  getAllUsers: async () => {
+    const res = await fetch(`${API_URL}/api/users`, {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    return res.json();
+  },
+
+  deleteUser: async (id) => {
+    const res = await fetch(`${API_URL}/api/users/${id}`, {
+      method: 'DELETE',
       headers: { 'Authorization': `Bearer ${getToken()}` }
     });
     return res.json();
