@@ -1,0 +1,253 @@
+.admin-layout {
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.admin-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.admin-content h1 {
+  font-size: 2.8rem;
+  color: var(--text-dark);
+  margin-bottom: 3rem;
+  font-weight: 800;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  transition: all 0.3s;
+  border: 1px solid var(--border);
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+
+.stat-icon {
+  font-size: 3rem;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+}
+
+.stat-info h3 {
+  font-size: 2.2rem;
+  color: var(--text-dark);
+  margin-bottom: 0.4rem;
+  font-weight: 800;
+}
+
+.stat-info p {
+  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.dashboard-section {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  margin-bottom: 2.5rem;
+  border: 1px solid var(--border);
+}
+
+.dashboard-section h2 {
+  font-size: 2rem;
+  color: var(--text-dark);
+  margin-bottom: 2rem;
+  font-weight: 800;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background: #f8f9fa;
+}
+
+.data-table th {
+  padding: 1.2rem;
+  text-align: left;
+  font-weight: 700;
+  color: var(--text-dark);
+  border-bottom: 2px solid var(--border);
+  font-size: 1rem;
+}
+
+.data-table td {
+  padding: 1.2rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.data-table tbody tr {
+  transition: background 0.2s;
+}
+
+.data-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.badge {
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge.active {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge.completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge.pending {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.badge.available {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge.rented {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge.maintenance {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.btn-icon {
+  padding: 0.6rem 0.8rem;
+  border: none;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.1rem;
+}
+
+.btn-icon:hover {
+  background: var(--primary-dark);
+  transform: scale(1.1);
+}
+
+.btn-icon.delete {
+  background: #dc2626;
+}
+
+.btn-icon.delete:hover {
+  background: #b91c1c;
+}
+
+.add-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 1.2rem 2.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 2rem;
+}
+
+.add-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16,185,129,0.4);
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 2.5rem;
+  margin-top: 2.5rem;
+}
+
+.report-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+}
+
+.report-card h3 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  margin-bottom: 2rem;
+  font-weight: 800;
+}
+
+.report-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.report-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.report-value {
+  font-weight: 800;
+  color: var(--primary);
+  font-size: 1.1rem;
+}
