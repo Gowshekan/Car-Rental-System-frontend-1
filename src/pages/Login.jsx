@@ -1,18 +1,36 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { api } from '../utils/api'
 import '../styles/auth.css'
 
 function Login({ setUser }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [role, setRole] = useState('user')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const userData = { email, role, name: email.split('@')[0] }
-    setUser(userData)
-    navigate(role === 'admin' ? '/admin/dashboard' : '/user/dashboard')
+    setError('')
+    setLoading(true)
+    
+    try {
+      const data = await api.login(email, password)
+      
+      if (data.token) {
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        setUser(data.user)
+        navigate(data.user.role === 'admin' ? '/admin/dashboard' : '/user/dashboard')
+      } else {
+        setError(data.message || 'Login failed')
+      }
+    } catch (err) {
+      setError('Unable to connect to server. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -26,6 +44,7 @@ function Login({ setUser }) {
             <p>Welcome back! Please login to your account</p>
           </div>
           <form onSubmit={handleSubmit} className="auth-form">
+            {error && <div style={{color: '#ff4d30', marginBottom: '15px', textAlign: 'center'}}>{error}</div>}
             <div className="form-field">
               <label>Email Address</label>
               <input 
@@ -34,6 +53,7 @@ function Login({ setUser }) {
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
                 required 
+                disabled={loading}
               />
             </div>
             <div className="form-field">
@@ -44,16 +64,12 @@ function Login({ setUser }) {
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
                 required 
+                disabled={loading}
               />
             </div>
-            <div className="form-field">
-              <label>Login As</label>
-              <select value={role} onChange={(e) => setRole(e.target.value)}>
-                <option value="user">Customer</option>
-                <option value="admin">Administrator</option>
-              </select>
-            </div>
-            <button type="submit" className="auth-btn">Sign In</button>
+            <button type="submit" className="auth-btn" disabled={loading}>
+              {loading ? 'Signing In...' : 'Sign In'}
+            </button>
           </form>
           <div className="auth-footer">
             <p>Don't have an account? <Link to="/register">Create Account</Link></p>
