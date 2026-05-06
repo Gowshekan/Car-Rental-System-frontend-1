@@ -1,15 +1,33 @@
+import { useState, useEffect } from 'react'
+import { api } from '../../utils/api'
 import Navbar from '../../components/Navbar'
 import '../../styles/user.css'
 
 function BookingHistory({ user, setUser }) {
-  const bookings = [
-    { id: 1, car: 'Maruti Swift', startDate: '15 Jan 2024', endDate: '20 Jan 2024', status: 'Completed', total: 6000 },
-    { id: 2, car: 'Hyundai Creta', startDate: '10 Feb 2024', endDate: '15 Feb 2024', status: 'Active', total: 12500 },
-    { id: 3, car: 'Honda City', startDate: '01 Mar 2024', endDate: '05 Mar 2024', status: 'Upcoming', total: 9000 }
-  ]
+  const [bookings, setBookings] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadBookings()
+  }, [])
+
+  const loadBookings = async () => {
+    try {
+      const data = await api.getBookings()
+      setBookings(data)
+    } catch (err) {
+      console.error('Failed to load bookings:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const getStatusClass = (status) => {
     return status.toLowerCase().replace(' ', '-')
+  }
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
   }
 
   return (
@@ -20,34 +38,40 @@ function BookingHistory({ user, setUser }) {
           <h1>My Bookings</h1>
           <p>View and manage your car rental bookings</p>
         </div>
-        <div className="bookings-container">
-          {bookings.map(booking => (
-            <div key={booking.id} className="booking-card">
-              <div className="booking-header">
-                <h3>{booking.car}</h3>
-                <span className={`status-badge ${getStatusClass(booking.status)}`}>{booking.status}</span>
-              </div>
-              <div className="booking-details">
-                <div className="detail-item">
-                  <span className="label">Pick-up Date</span>
-                  <span className="value">{booking.startDate}</span>
+        {loading ? (
+          <div style={{textAlign: 'center', padding: '50px'}}>Loading bookings...</div>
+        ) : bookings.length === 0 ? (
+          <div style={{textAlign: 'center', padding: '50px'}}>No bookings yet. Start booking cars!</div>
+        ) : (
+          <div className="bookings-container">
+            {bookings.map(booking => (
+              <div key={booking.id} className="booking-card">
+                <div className="booking-header">
+                  <h3>{booking.Car?.name || 'Car'}</h3>
+                  <span className={`status-badge ${getStatusClass(booking.status)}`}>{booking.status}</span>
                 </div>
-                <div className="detail-item">
-                  <span className="label">Return Date</span>
-                  <span className="value">{booking.endDate}</span>
+                <div className="booking-details">
+                  <div className="detail-item">
+                    <span className="label">Pick-up Date</span>
+                    <span className="value">{formatDate(booking.startDate)}</span>
+                  </div>
+                  <div className="detail-item">
+                    <span className="label">Return Date</span>
+                    <span className="value">{formatDate(booking.endDate)}</span>
+                  </div>
+                  <div className="detail-item">
+                    <span className="label">Total Amount</span>
+                    <span className="value">₹{booking.totalAmount}</span>
+                  </div>
                 </div>
-                <div className="detail-item">
-                  <span className="label">Total Amount</span>
-                  <span className="value">₹{booking.total}</span>
+                <div className="booking-actions">
+                  <button className="btn-secondary">View Details</button>
+                  {booking.status === 'Pending' && <button className="btn-danger">Cancel Booking</button>}
                 </div>
               </div>
-              <div className="booking-actions">
-                <button className="btn-secondary">View Details</button>
-                {booking.status === 'Upcoming' && <button className="btn-danger">Cancel Booking</button>}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

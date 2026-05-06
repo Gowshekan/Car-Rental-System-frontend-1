@@ -1,13 +1,26 @@
+import { useState, useEffect } from 'react'
+import { api } from '../../utils/api'
 import Navbar from '../../components/Navbar'
 import '../../styles/user.css'
 
 function UserDashboard({ user, setUser }) {
-  const featuredCars = [
-    { id: 1, name: 'Maruti Swift', type: 'Hatchback', price: 1200, image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800', rating: 4.8, seats: 5, transmission: 'Manual' },
-    { id: 2, name: 'Hyundai Creta', type: 'SUV', price: 2500, image: 'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800', rating: 4.9, seats: 5, transmission: 'Auto' },
-    { id: 3, name: 'Honda City', type: 'Sedan', price: 1800, image: 'https://images.unsplash.com/photo-1590362891991-f776e747a588?w=800', rating: 4.7, seats: 5, transmission: 'Auto' },
-    { id: 4, name: 'Mahindra Thar', type: 'SUV', price: 3000, image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800', rating: 4.9, seats: 4, transmission: 'Manual' }
-  ]
+  const [featuredCars, setFeaturedCars] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadCars()
+  }, [])
+
+  const loadCars = async () => {
+    try {
+      const data = await api.getCars()
+      setFeaturedCars(data.slice(0, 4))
+    } catch (err) {
+      console.error('Failed to load cars:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="user-layout">
@@ -44,40 +57,44 @@ function UserDashboard({ user, setUser }) {
           <p>Choose from our premium selection of vehicles</p>
         </div>
         
-        <div className="car-grid">
-          {featuredCars.map(car => (
-            <div key={car.id} className="car-card">
-              <div className="car-image-wrapper">
-                <img src={car.image} alt={car.name} className="car-image" />
-                <span className="car-badge">{car.type}</span>
+        {loading ? (
+          <div style={{textAlign: 'center', padding: '50px'}}>Loading cars...</div>
+        ) : (
+          <div className="car-grid">
+            {featuredCars.map(car => (
+              <div key={car.id} className="car-card">
+                <div className="car-image-wrapper">
+                  <img src={car.image} alt={car.name} className="car-image" />
+                  <span className="car-badge">{car.type}</span>
+                </div>
+                <div className="car-details">
+                  <h3>{car.name}</h3>
+                  <div className="car-rating">
+                    <span className="stars">⭐⭐⭐⭐⭐</span>
+                    <span className="rating-value">{car.rating}</span>
+                  </div>
+                  <div className="car-features">
+                    <div className="feature-item">
+                      <span className="icon">👥</span>
+                      <span>{car.seats} Seats</span>
+                    </div>
+                    <div className="feature-item">
+                      <span className="icon">⚙️</span>
+                      <span>{car.transmission}</span>
+                    </div>
+                  </div>
+                  <div className="car-footer">
+                    <div className="price-section">
+                      <span className="price">₹{car.price}</span>
+                      <span className="period">/day</span>
+                    </div>
+                    <button className="rent-btn">Book Now</button>
+                  </div>
+                </div>
               </div>
-              <div className="car-details">
-                <h3>{car.name}</h3>
-                <div className="car-rating">
-                  <span className="stars">⭐⭐⭐⭐⭐</span>
-                  <span className="rating-value">{car.rating}</span>
-                </div>
-                <div className="car-features">
-                  <div className="feature-item">
-                    <span className="icon">👥</span>
-                    <span>{car.seats} Seats</span>
-                  </div>
-                  <div className="feature-item">
-                    <span className="icon">⚙️</span>
-                    <span>{car.transmission}</span>
-                  </div>
-                </div>
-                <div className="car-footer">
-                  <div className="price-section">
-                    <span className="price">₹{car.price}</span>
-                    <span className="period">/day</span>
-                  </div>
-                  <button className="rent-btn">Book Now</button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         <div className="why-choose-section">
           <div className="section-header centered">
